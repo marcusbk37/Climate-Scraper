@@ -6,12 +6,6 @@
     "session": "Fall 2019Spring 2020"
   },
   {
-    "name": "TeachFX",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2019Spring 2020"
-  },
-  {
     "name": "Pr3vent Inc",
     "description": "",
     "industries": [],
@@ -151,12 +145,6 @@
   },
   {
     "name": "Pinetree Health",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2025"
-  },
-  {
-    "name": "Simply LLC",
     "description": "",
     "industries": [],
     "session": "Summer 2025"
@@ -318,12 +306,6 @@
     "session": "Summer 2025"
   },
   {
-    "name": "Phenix Space",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2025"
-  },
-  {
     "name": "FaceMed.ai",
     "description": "",
     "industries": [],
@@ -463,12 +445,6 @@
   },
   {
     "name": "MyopiaAI",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2025"
-  },
-  {
-    "name": "Sage Haven",
     "description": "",
     "industries": [],
     "session": "Spring 2025"
@@ -630,12 +606,6 @@
     "session": "Fall 2024Spring 2025"
   },
   {
-    "name": "PhysCade",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2024Spring 2025"
-  },
-  {
     "name": "Nephrogen Inc.",
     "description": "",
     "industries": [],
@@ -778,12 +748,6 @@
     "description": "",
     "industries": [],
     "session": "Fall 2024Spring 2025"
-  },
-  {
-    "name": "PASCALL Systems, Inc",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2024"
   },
   {
     "name": "PASCALL Systems, Inc",
@@ -942,12 +906,6 @@
     "session": "Summer 2024"
   },
   {
-    "name": "PerceptivePanda",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2024"
-  },
-  {
     "name": "Bitwage",
     "description": "",
     "industries": [],
@@ -1006,12 +964,6 @@
     "description": "",
     "industries": [],
     "session": "Summer 2024"
-  },
-  {
-    "name": "Quickie",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2024"
   },
   {
     "name": "Construction Cycles, Inc.",
@@ -1087,12 +1039,6 @@
   },
   {
     "name": "BT",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2024"
-  },
-  {
-    "name": "Arboreal AI",
     "description": "",
     "industries": [],
     "session": "Summer 2024"
@@ -1254,12 +1200,6 @@
     "session": "Spring 2024"
   },
   {
-    "name": "1Bstories",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2024"
-  },
-  {
     "name": "freebeat",
     "description": "",
     "industries": [],
@@ -1399,12 +1339,6 @@
   },
   {
     "name": "Traverse 3D",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2024Summer 2024"
-  },
-  {
-    "name": "AI-Learners",
     "description": "",
     "industries": [],
     "session": "Spring 2024Summer 2024"
@@ -1566,12 +1500,6 @@
     "session": "Summer 2023Fall 2023"
   },
   {
-    "name": "Eleven",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2023Fall 2023"
-  },
-  {
     "name": "Gan Studio Inc",
     "description": "",
     "industries": [],
@@ -1722,12 +1650,6 @@
     "session": "Summer 2023Fall 2023"
   },
   {
-    "name": "Dextral, Inc.",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2023Fall 2023"
-  },
-  {
     "name": "Scanner, Inc.",
     "description": "",
     "industries": [],
@@ -1867,12 +1789,6 @@
   },
   {
     "name": "Equipt Health",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2022"
-  },
-  {
-    "name": "IDPartner",
     "description": "",
     "industries": [],
     "session": "Fall 2022"
@@ -2034,12 +1950,6 @@
     "session": "Fall 2022"
   },
   {
-    "name": "Celeris Therapeutics",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2022"
-  },
-  {
     "name": "Finverse Technologies Limited",
     "description": "",
     "industries": [],
@@ -2154,12 +2064,6 @@
     "session": "Summer 2022Fall 2023"
   },
   {
-    "name": "Hive Health",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2022Fall 2022Spring 2023"
-  },
-  {
     "name": "WorkCo Inc",
     "description": "",
     "industries": [],
@@ -2182,12 +2086,6 @@
     "description": "",
     "industries": [],
     "session": "Spring 2022Summer 2022"
-  },
-  {
-    "name": "Yocto",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2022"
   },
   {
     "name": "Yocto",
@@ -2346,12 +2244,6 @@
     "session": "Summer 2024"
   },
   {
-    "name": "Skywalk",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2024"
-  },
-  {
     "name": "Ora",
     "description": "",
     "industries": [],
@@ -2502,12 +2394,6 @@
     "session": "Summer 2021"
   },
   {
-    "name": "Lumia Health (fka STAT Health Informatics, Pre Health Technology)",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2021"
-  },
-  {
     "name": "ISOThrive Inc.",
     "description": "",
     "industries": [],
@@ -2518,12 +2404,6 @@
     "description": "",
     "industries": [],
     "session": "Summer 2021"
-  },
-  {
-    "name": "TibaRay",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2021"
   },
   {
     "name": "MiResource",
@@ -2650,12 +2530,6 @@
     "description": "",
     "industries": [],
     "session": "Spring 2021"
-  },
-  {
-    "name": "Onena Medicines",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2021Summer 2021"
   },
   {
     "name": "Onena Medicines",
@@ -2814,12 +2688,6 @@
     "session": "Spring 2021Summer 2021"
   },
   {
-    "name": "SilkTech Biopharmaceuticals",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2021Summer 2021"
-  },
-  {
     "name": "Vcreate, Inc.",
     "description": "",
     "industries": [],
@@ -2959,12 +2827,6 @@
   },
   {
     "name": "Ouli Care",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2020"
-  },
-  {
-    "name": "NDR Medical Technology Pte Ltd",
     "description": "",
     "industries": [],
     "session": "Fall 2020"
@@ -3126,12 +2988,6 @@
     "session": "Summer 2020"
   },
   {
-    "name": "Federato (prior - SMSF)",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2020"
-  },
-  {
     "name": "Radical Semiconductor",
     "description": "",
     "industries": [],
@@ -3199,12 +3055,6 @@
   },
   {
     "name": "HubOn",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2020"
-  },
-  {
-    "name": "Selfina",
     "description": "",
     "industries": [],
     "session": "Summer 2020"
@@ -3282,19 +3132,7 @@
     "session": "Spring 2020"
   },
   {
-    "name": "Proseeder Technologies, Inc.",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2020"
-  },
-  {
     "name": "terrafuse",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2020"
-  },
-  {
-    "name": "Exponent",
     "description": "",
     "industries": [],
     "session": "Summer 2020"
@@ -3438,18 +3276,6 @@
     "session": "Fall 2019"
   },
   {
-    "name": "21 (Acquired by Perforce)",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2019"
-  },
-  {
-    "name": "Pareto",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2020Summer 2020Fall 2020"
-  },
-  {
     "name": "Alixia",
     "description": "",
     "industries": [],
@@ -3583,12 +3409,6 @@
   },
   {
     "name": "Atmo, Inc.",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2019"
-  },
-  {
-    "name": "Visolis",
     "description": "",
     "industries": [],
     "session": "Fall 2019"
@@ -3750,12 +3570,6 @@
     "session": "Fall 2017Spring 2018Fall 2019"
   },
   {
-    "name": "Spot Biosystems",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2017Spring 2018Fall 2019"
-  },
-  {
     "name": "Tueo Health",
     "description": "",
     "industries": [],
@@ -3864,12 +3678,6 @@
     "session": "Summer 2019Fall 2019"
   },
   {
-    "name": "Skip",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2019"
-  },
-  {
     "name": "Alertive Healthcare",
     "description": "",
     "industries": [],
@@ -3895,12 +3703,6 @@
   },
   {
     "name": "DataFleets",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2019"
-  },
-  {
-    "name": "Contagious Online Media Network Pvt. Ltd",
     "description": "",
     "industries": [],
     "session": "Summer 2019"
@@ -4062,12 +3864,6 @@
     "session": "Spring 2019Summer 2019"
   },
   {
-    "name": "EMME",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2019Summer 2019"
-  },
-  {
     "name": "Quantumcyte, Inc",
     "description": "",
     "industries": [],
@@ -4207,12 +4003,6 @@
   },
   {
     "name": "Tea Crush",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2019"
-  },
-  {
-    "name": "Curebase",
     "description": "",
     "industries": [],
     "session": "Spring 2019"
@@ -4374,12 +4164,6 @@
     "session": "Summer 2018Spring 2018"
   },
   {
-    "name": "ProbiusDx",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2018Spring 2018"
-  },
-  {
     "name": "PETcoil",
     "description": "",
     "industries": [],
@@ -4519,12 +4303,6 @@
   },
   {
     "name": "Core Wellness",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2018"
-  },
-  {
-    "name": "Contract Wrangler, Inc.",
     "description": "",
     "industries": [],
     "session": "Summer 2018"
@@ -4686,12 +4464,6 @@
     "session": "Summer 2018Summer 2017"
   },
   {
-    "name": "Luxury Presence",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2018Summer 2017"
-  },
-  {
     "name": "Immune-Onc Therapeutics",
     "description": "",
     "industries": [],
@@ -4831,12 +4603,6 @@
   },
   {
     "name": "Ethos",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2017"
-  },
-  {
-    "name": "Cardiologs",
     "description": "",
     "industries": [],
     "session": "Spring 2017"
@@ -4998,12 +4764,6 @@
     "session": "Fall 2016"
   },
   {
-    "name": "The Guestbook",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2016"
-  },
-  {
     "name": "Lucid",
     "description": "",
     "industries": [],
@@ -5146,12 +4906,6 @@
     "description": "",
     "industries": [],
     "session": "Fall 2015"
-  },
-  {
-    "name": "Let's Maybe",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2015"
   },
   {
     "name": "Let's Maybe",
@@ -5310,12 +5064,6 @@
     "session": "Summer 2016Fall 2016"
   },
   {
-    "name": "HeartVista, Inc.",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2016Fall 2016"
-  },
-  {
     "name": "EmbraceFamily Health",
     "description": "",
     "industries": [],
@@ -5466,12 +5214,6 @@
     "session": "Fall 2014Summer 2016"
   },
   {
-    "name": "MathPapa",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2014Summer 2016"
-  },
-  {
     "name": "Foldscope Instruments, Inc",
     "description": "",
     "industries": [],
@@ -5611,12 +5353,6 @@
   },
   {
     "name": "Mattermost, Inc.",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2016"
-  },
-  {
-    "name": "ZendyHealth",
     "description": "",
     "industries": [],
     "session": "Spring 2016"
@@ -5778,12 +5514,6 @@
     "session": "Fall 2015"
   },
   {
-    "name": "Healthy Horizons",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2015"
-  },
-  {
     "name": "Blendoor",
     "description": "",
     "industries": [],
@@ -5923,12 +5653,6 @@
   },
   {
     "name": "ZingBox",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2015"
-  },
-  {
-    "name": "Workr",
     "description": "",
     "industries": [],
     "session": "Summer 2015"
@@ -6090,12 +5814,6 @@
     "session": "Summer 2015"
   },
   {
-    "name": "Forever Oceans",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2015"
-  },
-  {
     "name": "PlayPosit",
     "description": "",
     "industries": [],
@@ -6235,12 +5953,6 @@
   },
   {
     "name": "Magnetic Insight",
-    "description": "",
-    "industries": [],
-    "session": "Spring 2015Summer 2015"
-  },
-  {
-    "name": "Luma Health",
     "description": "",
     "industries": [],
     "session": "Spring 2015Summer 2015"
@@ -6402,12 +6114,6 @@
     "session": "Summer 2014"
   },
   {
-    "name": "Tawkify",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2014"
-  },
-  {
     "name": "Parzival",
     "description": "",
     "industries": [],
@@ -6558,18 +6264,6 @@
     "session": "Fall 2014"
   },
   {
-    "name": "DropThought",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2014"
-  },
-  {
-    "name": "Skip",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2013"
-  },
-  {
     "name": "Daric",
     "description": "",
     "industries": [],
@@ -6706,12 +6400,6 @@
     "description": "",
     "industries": [],
     "session": "Summer 2012"
-  },
-  {
-    "name": "Smartgarden",
-    "description": "",
-    "industries": [],
-    "session": "No items found."
   },
   {
     "name": "Smartgarden",
@@ -6870,12 +6558,6 @@
     "session": "Summer 2010"
   },
   {
-    "name": "Instart Logic",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2010"
-  },
-  {
     "name": "Insidemaps",
     "description": "",
     "industries": [],
@@ -7018,12 +6700,6 @@
     "description": "",
     "industries": [],
     "session": "Summer 2012"
-  },
-  {
-    "name": "Datafox",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2013"
   },
   {
     "name": "Datafox",
@@ -7182,12 +6858,6 @@
     "session": "Summer 2012"
   },
   {
-    "name": "Athena",
-    "description": "",
-    "industries": [],
-    "session": "Summer 2012"
-  },
-  {
     "name": "Accevia",
     "description": "",
     "industries": [],
@@ -7330,12 +7000,6 @@
     "description": "",
     "industries": [],
     "session": "Spring 2011"
-  },
-  {
-    "name": "Predictive Edge",
-    "description": "",
-    "industries": [],
-    "session": "Fall 2010"
   },
   {
     "name": "Predictive Edge",

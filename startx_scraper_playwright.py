@@ -254,6 +254,21 @@ class StartXScraperPlaywright:
                 
                 print(f"\nFound {len(all_companies)} total companies across all pages")
                 
+                # Remove duplicates
+                seen_names = set()
+                unique_companies = []
+                
+                for company in all_companies:
+                    name = company['name'].lower().strip()
+                    if name not in seen_names:
+                        seen_names.add(name)
+                        unique_companies.append(company)
+                    else:
+                        print(f"Duplicate found: {company['name']}")
+                
+                print(f"Removed {len(all_companies) - len(unique_companies)} duplicates")
+                all_companies = unique_companies
+                
                 # Save all companies to JSON file
                 self.save_results(all_companies, "all_companies.json")
                 
