@@ -1,0 +1,7 @@
+setup + put in pinecone stuff
+setup + put in openAI stuff (and load a bit of money in)
+get a bit of test data to try stuff
+    - put into supabase (in database.py)
+    - go from supabase to pinecone (embed) (in embedding.py)
+    - filter for the chunks I want (in embedding.py)
+    - use what is retrieved to get the full articles (in database.py)
