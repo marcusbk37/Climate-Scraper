@@ -1,5 +1,8 @@
 setup + put in pinecone stuff
 setup + put in openAI stuff (and load a bit of money in)
+- Does pinecone do it themselves? I think they might - they said I only have to work with text........
+*** this would be awesome... ***
+
 get a bit of test data to try stuff
     - put into supabase (in database.py)
     - go from supabase to pinecone (embed) (in embedding.py)
