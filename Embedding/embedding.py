@@ -22,17 +22,17 @@ class ArticleEmbedder:
         if not all([api_key, environment, index_name]):
             raise ValueError("Missing Pinecone configuration in environment")
         
-        pinecone.init(api_key=api_key, environment=environment)
-        self.index = pinecone.Index(index_name)
+        pc = pinecone.Pinecone(api_key=api_key)
+        self.index = pc.Index(index_name)
     
-    def chunk_text(self, text: str, chunk_size: int = 1000, overlap: int = 200) -> List[str]:
+    def chunk_text(self, text: str, chunk_size: int = 1000, overlap: int = 0) -> List[str]:
         """
         Split text into overlapping chunks.
         
         Args:
             text: Text to chunk
             chunk_size: Target size for each chunk (characters)
-            overlap: Number of characters to overlap between chunks
+            overlap: Number of characters to overlap between chunks (default to 0 - was having problems with small chunks)
             
         Returns:
             List of text chunks
@@ -44,52 +44,60 @@ class ArticleEmbedder:
         start = 0
         
         while start < len(text):
+            # Calculate the end position for this chunk
             end = start + chunk_size
             
-            # If this isn't the last chunk, try to break at a sentence boundary
+            # If we haven't reached the end of the text yet
             if end < len(text):
-                # Look for sentence endings within the last 100 characters
+                # Calculate where to start searching for a sentence boundary
+                # We want to look in the last 100 characters of the chunk,
+                # but never before the chunk's start position.
+                # For example, if chunk_size is 1000:
+                # - Normally search from position 900 (1000-100) to 1000
+                # - But if start position is 950, search from 950 to 1000 instead
                 search_start = max(start + chunk_size - 100, start)
+
+                # Add a small buffer to check for sentence endings just after chunk end
+                # Only check buffer if no period found in main window
+                print("period found: ", text.rfind('.', chunk_size // 2, end))
+                if text.rfind('.', chunk_size // 2, end) == -1:
+                    print("hi2")
+                    buffer_end = min(end + 20, len(text))
+                    print(buffer_end)
+
+                    # Find sentence end in buffer, see if it is close enough to the chunk end
+                    buffer_sentence_end = text.find('.', end, buffer_end)
+                    if buffer_sentence_end != -1 and buffer_sentence_end - end < 20:
+                        end = buffer_sentence_end + 1
+                
+                # Find last period in the search window
                 sentence_end = text.rfind('.', search_start, end)
-                if sentence_end > start + chunk_size // 2:  # Only break if we find a reasonable boundary
+                
+                # Only use sentence boundary if it's not too early in chunk
+                # This prevents tiny chunks
+                if sentence_end > start + chunk_size // 2:
                     end = sentence_end + 1
+            else:
+                # If we're past text length, cap at text length
+                end = len(text)
             
+            # Extract the chunk and clean whitespace
             chunk = text[start:end].strip()
+            
+            # Only add non-empty chunks
             if chunk:
                 chunks.append(chunk)
             
+            # Move start position forward by chunk size minus overlap
+            # This creates overlapping chunks
             start = end - overlap
-            if start >= len(text):
-                break
-        
-        return chunks
-    
-    def get_embedding(self, text: str) -> List[float]:
-        """
-        Get embedding for text. This is a placeholder - you'll need to implement
-        your preferred embedding method (OpenAI, sentence-transformers, etc.).
-        
-        Args:
-            text: Text to embed
             
-        Returns:
-            List of floats representing the embedding
-        """
-        # TODO: Replace with your preferred embedding method
-        # Example with OpenAI:
-        # import openai
-        # openai.api_key = os.getenv("OPENAI_API_KEY")
-        # response = openai.Embedding.create(input=text, model="text-embedding-ada-002")
-        # return response['data'][0]['embedding']
-        
-        # Placeholder: return random embedding (replace this!)
-        import numpy as np
-        return np.random.rand(1536).tolist()  # OpenAI ada-002 dimension
+        return chunks
     
     def store_article_chunks(
         self,
         article_id: str,
-        text: str,
+        text: str, # passes in the entire article. chunks within the function.
         title: Optional[str] = None,
         chunk_size: int = 1000,
         overlap: int = 200
@@ -116,9 +124,6 @@ class ArticleEmbedder:
             # Create unique chunk ID
             chunk_id = f"{article_id}_chunk_{i}"
             
-            # Get embedding
-            embedding = self.get_embedding(chunk)
-            
             # Prepare metadata
             metadata = {
                 "article_id": article_id,
@@ -131,13 +136,15 @@ class ArticleEmbedder:
             
             # Store in Pinecone
             try:
-                self.index.upsert(
-                    vectors=[{
-                        "id": chunk_id,
-                        "values": embedding,
-                        "metadata": metadata
-                    }]
-                )
+                self.index.upsert_records("ns1", [{
+                    "_id": chunk_id,
+                    "text": chunk,
+                    "article_id": article_id,
+                    "chunk_index": i,
+                    "title": title,
+                    "chunk_size": len(chunk),
+                    "total_chunks": len(chunks)
+                }])
                 chunk_ids.append(chunk_id)
                 print(f"  ✅ Stored chunk {i+1}/{len(chunks)}")
             except Exception as e:
@@ -183,3 +190,53 @@ class ArticleEmbedder:
 def get_embedder() -> ArticleEmbedder:
     """Get a configured embedder instance."""
     return ArticleEmbedder() 
+
+def test_chunk_text():
+    """Test the text chunking functionality."""
+    # Test basic chunking
+    print("\nTesting basic chunking...")
+    text = "This is a test. Another sentence here. And one more."
+    chunks = ArticleEmbedder().chunk_text(text, chunk_size=20)
+    for chunk in chunks:
+        print(chunk)
+    assert len(chunks) == 3
+    assert chunks[0] == "This is a test."
+    assert chunks[1] == "Another sentence here."
+    assert chunks[2] == "And one more."
+    print("✅ Basic chunking test passed")
+
+    # Test empty text
+    print("\nTesting empty text...")
+    chunks = ArticleEmbedder().chunk_text("", chunk_size=100)
+    assert len(chunks) == 0
+    print("✅ Empty text test passed")
+
+    # Test text shorter than chunk size
+    print("\nTesting text shorter than chunk size...")
+    short_text = "Short text."
+    chunks = ArticleEmbedder().chunk_text(short_text, chunk_size=100)
+    assert len(chunks) == 1
+    assert chunks[0] == short_text
+    print("✅ Short text test passed")
+
+    # Test with different chunk sizes
+    print("\nTesting different chunk sizes...")
+    long_text = "First sentence. Second sentence. Third sentence. Fourth sentence."
+    chunks_small = ArticleEmbedder().chunk_text(long_text, chunk_size=20)
+    chunks_large = ArticleEmbedder().chunk_text(long_text, chunk_size=50)
+    assert len(chunks_small) > len(chunks_large)
+    print("✅ Different chunk sizes test passed")
+
+    # Test preservation of sentence boundaries
+    print("\nTesting sentence boundary preservation...")
+    text_with_periods = "Sentence one. Sentence two. Sentence three."
+    chunks = ArticleEmbedder().chunk_text(text_with_periods, chunk_size=25)
+    for chunk in chunks:
+        assert chunk.endswith('.')
+    print("✅ Sentence boundary test passed")
+
+    print("\n✅ All chunk_text tests passed!")
+
+if __name__ == "__main__":
+    # Run the chunking tests
+    test_chunk_text()
