@@ -1,13 +1,7 @@
-setup + put in pinecone stuff
-setup + put in openAI stuff (and load a bit of money in)
-- Does pinecone do it themselves? I think they might - they said I only have to work with text........
-*** this would be awesome... ***
+finish setup for supabase
 
 get a bit of test data to try stuff
     - put into supabase (in database.py)
     - go from supabase to pinecone (embed) (in embedding.py)
     - filter for the chunks I want (in embedding.py)
     - use what is retrieved to get the full articles (in database.py)
-
-# last note as of Monday night - getting stuck on chunking (trying to work on buffer after end of sentence, isn't working atm)
-- might be good to start from scratch-ish and write my own logic...

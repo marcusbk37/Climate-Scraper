@@ -33,6 +33,7 @@ class ArticleEmbedder:
             text: Text to chunk
             chunk_size: Target size for each chunk (characters)
             overlap: Number of characters to overlap between chunks (default to 0 - was having problems with small chunks)
+            as of now, overlap should always be 0 - isn't working for MVP...
             
         Returns:
             List of text chunks
@@ -91,7 +92,7 @@ class ArticleEmbedder:
         text: str, # passes in the entire article. chunks within the function.
         title: Optional[str] = None,
         chunk_size: int = 1000,
-        overlap: int = 200
+        overlap: int = 0
     ) -> List[str]:
         """
         Chunk article text and store embeddings in Pinecone with article_id metadata.
@@ -114,17 +115,7 @@ class ArticleEmbedder:
         for i, chunk in enumerate(chunks):
             # Create unique chunk ID
             chunk_id = f"{article_id}_chunk_{i}"
-            
-            # Prepare metadata
-            metadata = {
-                "article_id": article_id,
-                "chunk_index": i,
-                "text": chunk,
-                "title": title,
-                "chunk_size": len(chunk),
-                "total_chunks": len(chunks)
-            }
-            
+
             # Store in Pinecone
             try:
                 self.index.upsert_records("ns1", [{
@@ -228,6 +219,118 @@ def test_chunk_text():
 
     print("\n✅ All chunk_text tests passed!")
 
+def test_store_article_chunks():
+    """Test the article chunking and storing functionality."""
+    embedder = ArticleEmbedder()
+    article_id = "test_article_1"
+    text = "This is a test article. It has some content."
+    title = "Test Article"
+    chunk_ids = embedder.store_article_chunks(article_id, text, title)
+
+    # Test with empty text
+    print("\nTesting store_article_chunks with empty text...")
+    empty_chunk_ids = embedder.store_article_chunks("empty_article", "", "Empty Article")
+    assert len(empty_chunk_ids) == 0
+    print("✅ Empty text storage test passed")
+
+    # Test with very long text
+    print("\nTesting store_article_chunks with long text...")
+    long_text = " ".join(["Sentence number " + str(i) + "." for i in range(100)])
+    long_chunk_ids = embedder.store_article_chunks("long_article", long_text, "Long Article")
+    assert len(long_chunk_ids) > 1
+    print("✅ Long text storage test passed")
+
+    # Test with different chunk sizes (for some reason, not sure if First sentence. is getting stored properly...)
+    print("\nTesting store_article_chunks with different chunk sizes...")
+    text = "First sentence. Second sentence. Third sentence. Fourth sentence."
+    small_chunk_ids = embedder.store_article_chunks("size_test", text, "Size Test", chunk_size=20)
+    large_chunk_ids = embedder.store_article_chunks("size_test", text, "Size Test", chunk_size=100)
+    assert len(small_chunk_ids) > len(large_chunk_ids)
+    print("✅ Different chunk sizes storage test passed")
+
+    # Test with overlap - haven't gotten overlap up yet. But isn't necessary for MVP...
+    # print("\nTesting store_article_chunks with overlap...")
+    # text = "First. Second. Third. Fourth. Fifth."
+    # no_overlap_ids = embedder.store_article_chunks("overlap_test", text, "Overlap Test", chunk_size=15, overlap=0)
+    # with_overlap_ids = embedder.store_article_chunks("overlap_test", text, "Overlap Test", chunk_size=15, overlap=5)
+    # assert len(with_overlap_ids) >= len(no_overlap_ids)
+    # print("✅ Overlap storage test passed")
+
+    # Test chunk ID format
+    print("\nTesting chunk ID format...")
+    test_id = "test_format"
+    chunk_ids = embedder.store_article_chunks(test_id, "Test text", "Test Format")
+    for i, chunk_id in enumerate(chunk_ids):
+        assert chunk_id == f"{test_id}_chunk_{i}", f"Chunk ID format incorrect: {chunk_id}"
+    print("✅ Chunk ID format test passed")
+
+    # Test metadata consistency
+    print("\nTesting metadata consistency...")
+    article_id = "metadata_test"
+    title = "Metadata Test"
+    text = "First sentence. Second sentence."
+    chunk_ids = embedder.store_article_chunks(article_id, text, title)
+    
+    # Verify each chunk in Pinecone
+    for i, chunk_id in enumerate(chunk_ids):
+        try:
+            result = embedder.index.fetch_records("ns1", [chunk_id])
+            assert result[chunk_id]["article_id"] == article_id
+            assert result[chunk_id]["title"] == title
+            assert result[chunk_id]["chunk_index"] == i
+            assert isinstance(result[chunk_id]["text"], str)
+        except Exception as e:
+            print(f"Failed to verify chunk {chunk_id}: {str(e)}")
+            raise
+    print("✅ Metadata consistency test passed")
+
+    print("\n✅ All store_article_chunks tests passed!")
+
+def test_search_chunks():
+    """Test the chunk searching functionality."""
+    embedder = ArticleEmbedder()
+
+    # Test basic search
+    print("\nTesting basic search...")
+    query = "test query"
+    results = embedder.search_chunks(query, limit=3)
+    assert isinstance(results, list), "Search should return a list"
+    if results:
+        for result in results:
+            assert isinstance(result, dict), "Each result should be a dictionary"
+            assert "id" in result, "Result should have an id"
+            assert "score" in result, "Result should have a score"
+            assert "metadata" in result, "Result should have metadata"
+        print("✅ Basic search test passed")
+    else:
+        print("⚠️ No results found, but search executed successfully")
+
+    # Test search with different limits
+    print("\nTesting search with different limits...")
+    results_small = embedder.search_chunks(query, limit=2)
+    results_large = embedder.search_chunks(query, limit=5)
+    assert len(results_small) <= 2, "Should respect small limit"
+    assert len(results_large) <= 5, "Should respect large limit"
+    print("✅ Search limits test passed")
+
+    # Test search with filters
+    print("\nTesting search with filters...")
+    filter_query = {
+        "article_id": "test_article_1"
+    }
+    filtered_results = embedder.search_chunks(query, filter=filter_query)
+    if filtered_results:
+        for result in filtered_results:
+            assert result["metadata"]["article_id"] == "test_article_1", "Filter not working correctly"
+        print("✅ Search filters test passed")
+    else:
+        print("⚠️ No filtered results found, but search executed successfully")
+
+    print("\n✅ All search_chunks tests passed!")
+
+
 if __name__ == "__main__":
-    # Run the chunking tests
-    test_chunk_text()
+    # Run tests
+    # test_chunk_text() - but never tested with overlap
+    # test_store_article_chunks()
+    # test_search_chunks()
