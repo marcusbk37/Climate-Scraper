@@ -8,3 +8,6 @@ get a bit of test data to try stuff
     - go from supabase to pinecone (embed) (in embedding.py)
     - filter for the chunks I want (in embedding.py)
     - use what is retrieved to get the full articles (in database.py)
+
+# last note as of Monday night - getting stuck on chunking (trying to work on buffer after end of sentence, isn't working atm)
+- might be good to start from scratch-ish and write my own logic...

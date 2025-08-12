@@ -49,21 +49,12 @@ class ArticleEmbedder:
             
             # If we haven't reached the end of the text yet
             if end < len(text):
-                # Calculate where to start searching for a sentence boundary
-                # We want to look in the last 100 characters of the chunk,
-                # but never before the chunk's start position.
-                # For example, if chunk_size is 1000:
-                # - Normally search from position 900 (1000-100) to 1000
-                # - But if start position is 950, search from 950 to 1000 instead
-                search_start = max(start + chunk_size - 100, start)
+                look_for_period = start + (chunk_size // 2)
 
                 # Add a small buffer to check for sentence endings just after chunk end
                 # Only check buffer if no period found in main window
-                print("period found: ", text.rfind('.', chunk_size // 2, end))
-                if text.rfind('.', chunk_size // 2, end) == -1:
-                    print("hi2")
+                if text.rfind('.', look_for_period, end) == -1:
                     buffer_end = min(end + 20, len(text))
-                    print(buffer_end)
 
                     # Find sentence end in buffer, see if it is close enough to the chunk end
                     buffer_sentence_end = text.find('.', end, buffer_end)
@@ -71,11 +62,10 @@ class ArticleEmbedder:
                         end = buffer_sentence_end + 1
                 
                 # Find last period in the search window
-                sentence_end = text.rfind('.', search_start, end)
-                
-                # Only use sentence boundary if it's not too early in chunk
-                # This prevents tiny chunks
-                if sentence_end > start + chunk_size // 2:
+                sentence_end = text.rfind('.', start, end)
+
+                # Only use sentence boundary if it's not too early in chunk. This prevents tiny chunks
+                if sentence_end >= look_for_period:
                     end = sentence_end + 1
             else:
                 # If we're past text length, cap at text length
@@ -91,7 +81,8 @@ class ArticleEmbedder:
             # Move start position forward by chunk size minus overlap
             # This creates overlapping chunks
             start = end - overlap
-            
+
+        # print(chunks)    
         return chunks
     
     def store_article_chunks(
