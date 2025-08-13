@@ -160,6 +160,7 @@ class ArticleEmbedder:
     )
 
         return results
+        # maybe this should return just the article ids - thats how i'm gonna get the articles
 
 # Convenience function for quick usage
 def get_embedder() -> ArticleEmbedder:

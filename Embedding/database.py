@@ -64,8 +64,20 @@ class ArticleDatabase:
             print(f"✅ Stored article: {title or url} (ID: {article_id})")
             return article_id
         except Exception as e:
-            print(f"❌ Error storing article: {e}")
-            raise
+            # Handle duplicate key violation
+            if "duplicate key value violates unique constraint" in str(e).lower():
+                # Get the existing article ID
+                try:
+                    result = self.supabase.table("articles").select("id").eq("url", url).single().execute()
+                    existing_id = result.data["id"]
+                    print(f"⏭️  Article already exists: {title or url} (ID: {existing_id})")
+                    return existing_id
+                except Exception as get_error:
+                    print(f"❌ Error retrieving existing article: {get_error}")
+                    raise
+            else:
+                print(f"❌ Error storing article: {e}")
+                raise
     
     def get_article_by_id(self, article_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -122,4 +134,47 @@ class ArticleDatabase:
 # Convenience function for quick usage
 def get_db() -> ArticleDatabase:
     """Get a configured database instance."""
-    return ArticleDatabase() 
+    return ArticleDatabase()
+
+def test_store_article():
+    """Test storing articles in the database."""
+    db = ArticleDatabase()
+    
+    print("\nTesting article storage...")
+    
+    # Test storing basic article
+    test_article = {
+        "url": "https://example.com/test",
+        "domain": "example.com",
+        "title": "Test Article", 
+        "text": "This is a test article.",
+        "authors": ["Test Author"],
+        "published_at": "2023-01-01T00:00:00Z"
+    }
+    
+    print("\nTrying to store basic article...")
+    article_id = db.store_article(test_article["url"], test_article["text"], test_article["title"], test_article["authors"], test_article["published_at"])
+    if article_id is not None:
+        print(f"✅ Successfully stored article with ID: {article_id}")
+    else:
+        print("❌ Failed to store article")
+    assert article_id is not None, "Article storage failed"
+    
+    # Test storing article with missing optional fields
+    minimal_article = {
+        "url": "https://example.com/minimal",
+        "text": "Minimal test article."
+    }
+    
+    print("\nTrying to store minimal article...")
+    minimal_id = db.store_article(minimal_article["url"], minimal_article["text"])
+    if minimal_id is not None:
+        print(f"✅ Successfully stored minimal article with ID: {minimal_id}")
+    else:
+        print("❌ Failed to store minimal article")
+    assert minimal_id is not None, "Minimal article storage failed"
+
+    print("\n🎯 All article storage tests completed")
+
+if __name__ == "__main__":
+    test_store_article()

@@ -5,7 +5,7 @@ create extension if not exists pgcrypto;
 
 create table if not exists articles (
   id uuid primary key default gen_random_uuid(),
-  url text not null,
+  url text not null unique,  -- Added unique constraint to prevent duplicates
   domain text,
   title text,
   authors jsonb,
@@ -18,7 +18,4 @@ create table if not exists articles (
 -- Indexes for common queries
 create index if not exists idx_articles_domain on articles(domain);
 create index if not exists idx_articles_published_at on articles(published_at);
-create index if not exists idx_articles_created_at on articles(created_at);
-
--- Optional: Add this later if you want URL deduplication
--- alter table articles add constraint unique_url unique (url); 
+create index if not exists idx_articles_created_at on articles(created_at); 
