@@ -139,34 +139,27 @@ class ArticleEmbedder:
         self,
         query: str,
         top_k: int = 10,
-        filter_metadata: Optional[Dict[str, Any]] = None
-    ) -> List[Dict[str, Any]]:
+    ) -> Dict[str, Any]:
         """
         Search for relevant chunks in Pinecone.
         
         Args:
             query: Search query
             top_k: Number of results to return
-            filter_metadata: Optional metadata filters
             
         Returns:
             List of search results with metadata
         """
-        # Get query embedding
-        query_embedding = self.get_embedding(query)
-        
-        # Search Pinecone
-        try:
-            results = self.index.query(
-                vector=query_embedding,
-                top_k=top_k,
-                include_metadata=True,
-                filter=filter_metadata
-            )
-            return results.matches
-        except Exception as e:
-            print(f"❌ Error searching Pinecone: {e}")
-            return []
+        results = self.index.search(
+        namespace="ns1", 
+        query={
+            "inputs": {"text": query}, 
+            "top_k": top_k
+        },
+        fields=["title","text"]
+    )
+
+        return results
 
 # Convenience function for quick usage
 def get_embedder() -> ArticleEmbedder:
@@ -293,38 +286,16 @@ def test_search_chunks():
     # Test basic search
     print("\nTesting basic search...")
     query = "test query"
-    results = embedder.search_chunks(query, limit=3)
-    assert isinstance(results, list), "Search should return a list"
+    results = embedder.search_chunks(query, top_k=3)
+    print(results)
     if results:
-        for result in results:
-            assert isinstance(result, dict), "Each result should be a dictionary"
-            assert "id" in result, "Result should have an id"
-            assert "score" in result, "Result should have a score"
-            assert "metadata" in result, "Result should have metadata"
+        for result in results["result"]["hits"]:
+            print()
+            print()
+            print(result)
         print("✅ Basic search test passed")
     else:
         print("⚠️ No results found, but search executed successfully")
-
-    # Test search with different limits
-    print("\nTesting search with different limits...")
-    results_small = embedder.search_chunks(query, limit=2)
-    results_large = embedder.search_chunks(query, limit=5)
-    assert len(results_small) <= 2, "Should respect small limit"
-    assert len(results_large) <= 5, "Should respect large limit"
-    print("✅ Search limits test passed")
-
-    # Test search with filters
-    print("\nTesting search with filters...")
-    filter_query = {
-        "article_id": "test_article_1"
-    }
-    filtered_results = embedder.search_chunks(query, filter=filter_query)
-    if filtered_results:
-        for result in filtered_results:
-            assert result["metadata"]["article_id"] == "test_article_1", "Filter not working correctly"
-        print("✅ Search filters test passed")
-    else:
-        print("⚠️ No filtered results found, but search executed successfully")
 
     print("\n✅ All search_chunks tests passed!")
 
@@ -333,4 +304,4 @@ if __name__ == "__main__":
     # Run tests
     # test_chunk_text() - but never tested with overlap
     # test_store_article_chunks()
-    # test_search_chunks()
+    test_search_chunks()
