@@ -92,6 +92,7 @@ class ArticleDatabase:
         try:
             result = self.supabase.table("articles").select("*").eq("id", article_id).single().execute()
             return result.data
+            # or would I rather return just the text? rn, leaving it as returning the article
         except Exception as e:
             print(f"❌ Error retrieving article {article_id}: {e}")
             return None
@@ -176,5 +177,13 @@ def test_store_article():
 
     print("\n🎯 All article storage tests completed")
 
+def test_get_article_by_id():
+    """Test retrieving an article by its ID."""
+    db = ArticleDatabase()
+    article_id = "49659337-1873-47dd-9586-a357e7f72b74"
+    article = db.get_article_by_id(article_id)
+    print(f"Article: {article}")
+
 if __name__ == "__main__":
-    test_store_article()
+    # test_store_article()
+    test_get_article_by_id()

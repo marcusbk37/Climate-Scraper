@@ -7,4 +7,5 @@ get a bit of test data to try stuff
     - use what is retrieved to get the full articles (in database.py)
 
 What am I doing about duplicate articles? Because that could be problematic...
-- if url, author, and title is the same, don't store?
+- right now, if url is same don't store
+- in the future, want to add a way to update content that exists
