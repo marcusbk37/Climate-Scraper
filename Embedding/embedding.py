@@ -156,7 +156,7 @@ class ArticleEmbedder:
             "inputs": {"text": query}, 
             "top_k": top_k
         },
-        fields=["title","text"]
+        fields=["title","text","article_id"]
     )
 
         return results

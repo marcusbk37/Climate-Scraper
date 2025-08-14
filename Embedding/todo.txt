@@ -1,10 +1,12 @@
-finish setup for supabase
-
 get a bit of test data to try stuff
     - put into supabase (in database.py)
     - go from supabase to pinecone (embed) (in embedding.py) - this function works
     - filter for the chunks I want (in embedding.py) - this function works
     - use what is retrieved to get the full articles (in database.py)
+
+
+
+
 
 What am I doing about duplicate articles? Because that could be problematic...
 - right now, if url is same don't store
