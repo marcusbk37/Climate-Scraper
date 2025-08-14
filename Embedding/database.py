@@ -184,6 +184,21 @@ def test_get_article_by_id():
     article = db.get_article_by_id(article_id)
     print(f"Article: {article}")
 
+def test_get_articles_by_domain():
+    """Test retrieving articles by domain."""
+    db = ArticleDatabase()
+    domain = "example.com"
+    articles = db.get_articles_by_domain(domain)
+    print(f"Articles: {articles}")
+
+def test_get_recent_articles():
+    """Test retrieving recent articles."""
+    db = ArticleDatabase()
+    articles = db.get_recent_articles()
+    print(f"Articles: {articles}")
+
 if __name__ == "__main__":
     # test_store_article()
-    test_get_article_by_id()
+    # test_get_article_by_id()
+    # test_get_articles_by_domain()
+    test_get_recent_articles()
