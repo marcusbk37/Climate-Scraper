@@ -65,13 +65,12 @@ def search():
             if article:
                 # Add search relevance info
                 article['search_relevance'] = {
-                    'matching_chunks': len([h for h in hits if h['fields'].get('article_id') == article_id]),
-                    'top_score': max([h['score'] for h in hits if h['fields'].get('article_id') == article_id], default=0)
+                    'matching_chunks': len([h for h in hits if h['fields'].get('article_id') == article_id])
                 }
                 articles.append(article)
         
-        # Sort articles by relevance (top score first)
-        articles.sort(key=lambda x: x['search_relevance']['top_score'], reverse=True)
+        # Sort articles by number of matching chunks
+        articles.sort(key=lambda x: x['search_relevance']['matching_chunks'], reverse=True)
         
         print(f"📰 Retrieved {len(articles)} unique articles")
         

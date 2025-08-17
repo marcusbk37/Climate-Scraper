@@ -371,7 +371,6 @@
 
             // Display articles
             data.articles.forEach(article => {
-                const relevanceScore = Math.round(article.search_relevance.top_score * 100);
                 const previewText = article.text.length > 300 ? 
                     article.text.substring(0, 300) + '...' : 
                     article.text;
@@ -383,7 +382,6 @@
                         <a href="${article.url || '#'}" target="_blank">
                             ${article.title || 'Untitled Article'}
                         </a>
-                        <span class="relevance-badge">${relevanceScore}% match</span>
                     </div>
                     <div class="article-meta">
                         ${article.authors && article.authors.length > 0 ? 
