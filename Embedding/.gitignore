@@ -185,3 +185,6 @@ models/
 # Cache directories
 .cache/
 cache/ 
+
+# personal files
+Climate Map Companies.csv

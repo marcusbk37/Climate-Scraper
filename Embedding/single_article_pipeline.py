@@ -4,7 +4,7 @@ Complete workflow for processing a single article:
 1. Upload a new article to Supabase
 2. Get the full article from Supabase
 3. Chunk + upload that article to pinecone
-4. Search pinecone and retrieve results
+4. Search pinecone and retrieve results (optional, if you want to)
 """
 
 import os

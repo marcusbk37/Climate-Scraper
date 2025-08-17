@@ -1,12 +1,14 @@
-get a bit of test data to try stuff
-    - put into supabase (in database.py)
-    - go from supabase to pinecone (embed) (in embedding.py) - this function works
-    - filter for the chunks I want (in embedding.py) - this function works
-    - use what is retrieved to get the full articles (in database.py)
+What is MVP of this scraper that I can demo Tuesday (ideally earlier)?
+- Needs to have some intake - needs to be able to take in google sheet. I can do this manually
+- Needs to have a basic front end - a simple webpage where you put in a query,
+it calls the backend with that query, and then displays the top (10) articles
+(so basically has an input to call the pipeline I set up and shows the results)
 
 
 
 
+now, gotta get the scraper working to get interesting content...
+- where can I get useful content from? google probably isn't valuable...
 
 What am I doing about duplicate articles? Because that could be problematic...
 - right now, if url is same don't store
