@@ -1,6 +1,9 @@
-supabase==2.3.4
+supabase==1.0.3
 pinecone-client==3.0.2
 python-dotenv==1.0.0
 requests==2.31.0
 beautifulsoup4==4.12.2
-numpy==1.24.3 
+numpy==1.24.3
+
+# running in scraper environment. using pinecone 3.0.2 and supabase 1.0.3.
+# idk why I had to change, but now its working...
