@@ -1,9 +1,13 @@
 What is MVP of this scraper that I can demo Tuesday (ideally earlier)?
 - Needs to have some intake - needs to be able to take in google sheet. I can do this manually
+** did this, great job **
+
 - Needs to have a basic front end - a simple webpage where you put in a query,
 it calls the backend with that query, and then displays the top (10) articles
 (so basically has an input to call the pipeline I set up and shows the results)
+** did this, great job **
 
+Now, need to deploy frontend. Might need to change env vars and RLS in supabase?
 
 
 
@@ -13,3 +17,5 @@ now, gotta get the scraper working to get interesting content...
 What am I doing about duplicate articles? Because that could be problematic...
 - right now, if url is same don't store
 - in the future, want to add a way to update content that exists
+
+Do want to ultimately put in a score and a % match. But for now not necessary
