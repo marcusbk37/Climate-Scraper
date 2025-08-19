@@ -141,7 +141,7 @@ class ArticleEmbedder:
         top_k: int = 10,
     ) -> Dict[str, Any]:
         """
-        Search for relevant chunks in Pinecone.
+        Search for relevant chunks in Pinecone using hybrid search.
         
         Args:
             query: Search query
@@ -150,13 +150,48 @@ class ArticleEmbedder:
         Returns:
             List of search results with metadata
         """
-        # For now, return empty results since we need to implement proper search
-        # This will prevent the error and allow the app to work
-        return {
-            "result": {
-                "hits": []
+        try:
+            # Use Pinecone's hybrid search with text query
+            results = self.index.query(
+                vector=[],  # Empty vector for text-only search
+                top_k=top_k,
+                include_metadata=True,
+                namespace="ns1",
+                filter={},  # No filters for now
+                hybrid_search=True,
+                query_text=query
+            )
+            
+            # Convert results to the expected format
+            hits = []
+            for match in results.matches:
+                hit = {
+                    'id': match.id,
+                    'score': match.score,
+                    'fields': {
+                        'text': match.metadata.get('text', ''),
+                        'title': match.metadata.get('title', ''),
+                        'article_id': match.metadata.get('article_id', ''),
+                        'chunk_index': match.metadata.get('chunk_index', -1),
+                        'chunk_size': match.metadata.get('chunk_size', -1),
+                        'total_chunks': match.metadata.get('total_chunks', -1)
+                    }
+                }
+                hits.append(hit)
+            
+            return {
+                "result": {
+                    "hits": hits
+                }
             }
-        }
+        except Exception as e:
+            print(f"Search error: {e}")
+            # Return empty results if search fails
+            return {
+                "result": {
+                    "hits": []
+                }
+            }
         # maybe this should return just the article ids - thats how i'm gonna get the articles
 
 # Convenience function for quick usage
