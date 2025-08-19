@@ -3,7 +3,9 @@ import sys
 import os
 from datetime import datetime
 
-# Import local modules
+# Add the Embedding directory to the path so we can import our modules
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'Embedding'))
+
 from database import get_db
 from embedding import get_embedder
 
