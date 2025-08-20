@@ -64,14 +64,22 @@ def search():
         # Retrieve full article details from Supabase
         db = get_db()
         articles = []
+        
+        # Calculate relative scoring based on top result
+        top_score = max(scores_by_article.values()) if scores_by_article else 1.0
+        
         for article_id in article_ids:
             article = db.get_article_by_id(article_id)
             if article:
                 # Add search relevance info
                 best_score = scores_by_article.get(article_id, 0.0)
+                absolute_percent = round(best_score * 100)
+                relative_percent = round((best_score / top_score) * 100) if top_score > 0 else 0
+                
                 article['search_relevance'] = {
                     'matching_chunks': len([h for h in hits if h['fields'].get('article_id') == article_id]),
-                    'percent_match': round(best_score * 100)
+                    'percent_match': absolute_percent,
+                    'relative_relevance': relative_percent
                 }
                 articles.append(article)
         

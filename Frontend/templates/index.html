@@ -247,6 +247,12 @@
             margin-left: 10px;
         }
 
+        .relevance-badge.secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            font-size: 0.75rem;
+            padding: 3px 10px;
+        }
+
         .error-message {
             background: #fee;
             border: 1px solid #fcc;
@@ -398,8 +404,7 @@
 
             // Display articles
             data.articles.forEach(article => {
-                const isLongText = article.text.length > 300;
-                const previewText = isLongText ? 
+                const previewText = article.text.length > 300 ? 
                     article.text.substring(0, 300) + '...' : 
                     article.text;
 
@@ -410,8 +415,9 @@
                         <a href="${article.url || '#'}" target="_blank">
                             ${article.title || 'Untitled Article'}
                         </a>
-                        ${article.search_relevance && article.search_relevance.percent_match ? 
-                            `<span class="relevance-badge">${article.search_relevance.percent_match}% match</span>` : 
+                        ${article.search_relevance ? 
+                            `<span class="relevance-badge">${article.search_relevance.percent_match}% match</span>
+                             <span class="relevance-badge secondary">${article.search_relevance.relative_relevance}% relevance to top</span>` : 
                             ''}
                     </div>
                     <div class="article-meta">
@@ -429,9 +435,9 @@
                         </span>
                     </div>
                     <div class="article-text article-text-preview" data-full-text="${article.text}">
-                        ${isLongText ? previewText : article.text}
+                        ${previewText}
                     </div>
-                    ${isLongText ? '<button class="expand-button" onclick="toggleExpand(this)">Show more</button>' : ''}
+                    <button class="expand-button" onclick="toggleExpand(this)">Show more</button>
                 `;
                 resultsList.appendChild(articleCard);
             });
@@ -449,16 +455,22 @@
         function toggleExpand(button) {
             const textContainer = button.previousElementSibling;
             const isExpanded = textContainer.classList.contains('expanded');
+            const fullText = textContainer.getAttribute('data-full-text');
+            const isLongText = fullText.length > 300;
             
             if (isExpanded) {
                 // Collapse
                 textContainer.classList.remove('expanded');
-                textContainer.textContent = textContainer.getAttribute('data-full-text').substring(0, 300) + '...';
+                if (isLongText) {
+                    textContainer.textContent = fullText.substring(0, 300) + '...';
+                } else {
+                    textContainer.textContent = fullText;
+                }
                 button.textContent = 'Show more';
             } else {
                 // Expand
                 textContainer.classList.add('expanded');
-                textContainer.textContent = textContainer.getAttribute('data-full-text');
+                textContainer.textContent = fullText;
                 button.textContent = 'Show less';
             }
         }
