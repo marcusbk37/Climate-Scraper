@@ -197,6 +197,11 @@
             max-height: 100px;
             overflow: hidden;
             position: relative;
+            transition: max-height 0.3s ease;
+        }
+
+        .article-text-preview.expanded {
+            max-height: none;
         }
 
         .article-text-preview::after {
@@ -207,6 +212,28 @@
             right: 0;
             height: 20px;
             background: linear-gradient(transparent, white);
+            transition: opacity 0.3s ease;
+        }
+
+        .article-text-preview.expanded::after {
+            opacity: 0;
+        }
+
+        .expand-button {
+            background: none;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 5px 0;
+            margin-top: 10px;
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        .expand-button:hover {
+            color: #764ba2;
         }
 
         .relevance-badge {
@@ -371,7 +398,8 @@
 
             // Display articles
             data.articles.forEach(article => {
-                const previewText = article.text.length > 300 ? 
+                const isLongText = article.text.length > 300;
+                const previewText = isLongText ? 
                     article.text.substring(0, 300) + '...' : 
                     article.text;
 
@@ -400,9 +428,10 @@
                             '<span>🌐 Unknown source'}
                         </span>
                     </div>
-                    <div class="article-text article-text-preview">
-                        ${previewText}
+                    <div class="article-text article-text-preview" data-full-text="${article.text}">
+                        ${isLongText ? previewText : article.text}
                     </div>
+                    ${isLongText ? '<button class="expand-button" onclick="toggleExpand(this)">Show more</button>' : ''}
                 `;
                 resultsList.appendChild(articleCard);
             });
@@ -415,6 +444,23 @@
                     <strong>Error:</strong> ${message}
                 </div>
             `;
+        }
+
+        function toggleExpand(button) {
+            const textContainer = button.previousElementSibling;
+            const isExpanded = textContainer.classList.contains('expanded');
+            
+            if (isExpanded) {
+                // Collapse
+                textContainer.classList.remove('expanded');
+                textContainer.textContent = textContainer.getAttribute('data-full-text').substring(0, 300) + '...';
+                button.textContent = 'Show more';
+            } else {
+                // Expand
+                textContainer.classList.add('expanded');
+                textContainer.textContent = textContainer.getAttribute('data-full-text');
+                button.textContent = 'Show less';
+            }
         }
 
         // Focus search input on page load

@@ -1,6 +1,6 @@
 Soon To-Do
 - Put in scoring mechanism
-        % of top result (for comparison) and % match
+        need to add % of top result (for comparison)
 - Clean up front end to expand view of an article
 ** after these, send out to the team **
 
