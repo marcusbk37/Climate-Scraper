@@ -435,7 +435,7 @@
                         </span>
                     </div>
                     <div class="article-text article-text-preview" data-full-text="${article.text}">
-                        ${previewText}
+                        ${makeLinksClickable(previewText)}
                     </div>
                     <button class="expand-button" onclick="toggleExpand(this)">Show more</button>
                 `;
@@ -452,6 +452,16 @@
             `;
         }
 
+        function makeLinksClickable(text) {
+            // Regular expression to match URLs with or without protocol
+            const urlRegex = /(https?:\/\/[^\s]+)|(\b(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}(?:\/[^\s]*)?)/g;
+            return text.replace(urlRegex, function(match, httpUrl, domainUrl) {
+                const url = httpUrl || domainUrl;
+                const href = httpUrl ? url : 'https://' + url;
+                return `<a href="${href}" target="_blank" style="color: #667eea; text-decoration: underline;">${url}</a>`;
+            });
+        }
+
         function toggleExpand(button) {
             const textContainer = button.previousElementSibling;
             const isExpanded = textContainer.classList.contains('expanded');
@@ -462,15 +472,16 @@
                 // Collapse
                 textContainer.classList.remove('expanded');
                 if (isLongText) {
-                    textContainer.textContent = fullText.substring(0, 300) + '...';
+                    const previewText = fullText.substring(0, 300) + '...';
+                    textContainer.innerHTML = makeLinksClickable(previewText);
                 } else {
-                    textContainer.textContent = fullText;
+                    textContainer.innerHTML = makeLinksClickable(fullText);
                 }
                 button.textContent = 'Show more';
             } else {
                 // Expand
                 textContainer.classList.add('expanded');
-                textContainer.textContent = fullText;
+                textContainer.innerHTML = makeLinksClickable(fullText);
                 button.textContent = 'Show less';
             }
         }
