@@ -1,3 +1,20 @@
+Soon To-Do
+- Put in scoring mechanism
+        % of top result (for comparison) and % match
+- Clean up front end to expand view of an article
+** after these, send out to the team **
+
+- Tag field in supabase for different sources (eg. company vs. research paper)?
+- Put in Nate's sheet
+- Research API
+- Daily newsletters
+
+
+
+
+
+
+
 What is MVP of this scraper that I can demo Tuesday (ideally earlier)?
 - Needs to have some intake - needs to be able to take in google sheet. I can do this manually
 ** did this, great job **
@@ -19,3 +36,23 @@ What am I doing about duplicate articles? Because that could be problematic...
 - in the future, want to add a way to update content that exists
 
 Do want to ultimately put in a score and a % match. But for now not necessary
+
+
+From Meeting
+- Put in score and match %. 
+- A few more frontend things to clean up (eg. can click and expand, can see stuff more cleanly)
+- Figure out how to tag and format the data more cleanly...
+
+- Broaden info intake (Nate's sheet, Stanford sources)
+    Cass's thoughts on how to automate - gmail plugin API,
+    ex-Googler who wrote chrome extension to manipulate the DOM (doing it from the HTML)
+    Spok has capability where you can connect inbox to Spok and show all conversations
+
+Reach out to Thomas re. MIT startups
+
+    Public sources:
+        TomKat website
+        Research papers (but have to filter through the noise - reputable institutions)
+            Archive has an API (easiest to filter) - Cass likes this
+        What if you dump out pitchbooks?
+        Daily newsletters (CTVC, Daily VC, NextPlay?). Might be an RSS feed (so wouldn't have to scrape email)

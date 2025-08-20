@@ -382,6 +382,9 @@
                         <a href="${article.url || '#'}" target="_blank">
                             ${article.title || 'Untitled Article'}
                         </a>
+                        ${article.search_relevance && article.search_relevance.percent_match ? 
+                            `<span class="relevance-badge">${article.search_relevance.percent_match}% match</span>` : 
+                            ''}
                     </div>
                     <div class="article-meta">
                         ${article.authors && article.authors.length > 0 ? 

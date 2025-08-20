@@ -47,13 +47,19 @@ def search():
         
         hits = search_results['result']['hits']
         print(f"✅ Found {len(hits)} relevant chunks")
+        for hit in hits:
+            print(hit["_score"]) # this is how you access the similarity score. good.
         
-        # Extract unique article IDs
+        # Extract unique article IDs and track best scores
         article_ids = set()
+        scores_by_article = {} # dictionary to track best-scoring chunk for each article
         for hit in hits:
             article_id = hit['fields'].get('article_id')
             if article_id:
                 article_ids.add(article_id)
+                # Track the best score for each article
+                current_best = scores_by_article.get(article_id, 0.0)
+                scores_by_article[article_id] = max(current_best, hit['_score'])
         
         # Retrieve full article details from Supabase
         db = get_db()
@@ -62,13 +68,15 @@ def search():
             article = db.get_article_by_id(article_id)
             if article:
                 # Add search relevance info
+                best_score = scores_by_article.get(article_id, 0.0)
                 article['search_relevance'] = {
-                    'matching_chunks': len([h for h in hits if h['fields'].get('article_id') == article_id])
+                    'matching_chunks': len([h for h in hits if h['fields'].get('article_id') == article_id]),
+                    'percent_match': round(best_score * 100)
                 }
                 articles.append(article)
         
-        # Sort articles by number of matching chunks
-        articles.sort(key=lambda x: x['search_relevance']['matching_chunks'], reverse=True)
+        # Sort articles by score of max matching chunk
+        articles.sort(key=lambda x: x['search_relevance']['percent_match'], reverse=True)
         
         print(f"📰 Retrieved {len(articles)} unique articles")
         
