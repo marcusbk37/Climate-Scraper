@@ -73,12 +73,12 @@ def search():
             if article:
                 # Add search relevance info
                 best_score = scores_by_article.get(article_id, 0.0)
-                absolute_percent = round(best_score * 100)
+                absolute_percent = (90 if 1.5 * best_score * 100 > 90 else round(best_score * 100 * 1.5))
                 relative_percent = round((best_score / top_score) * 100) if top_score > 0 else 0
                 
                 article['search_relevance'] = {
                     'matching_chunks': len([h for h in hits if h['fields'].get('article_id') == article_id]),
-                    'percent_match': absolute_percent,
+                    'percent_match': ("90+" if absolute_percent == 90 else str(absolute_percent)),
                     'relative_relevance': relative_percent
                 }
                 articles.append(article)
