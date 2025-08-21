@@ -1,13 +1,14 @@
 Soon To-Do
-- Put in scoring mechanism
-        want to add % of top result (for comparison)
-- Clean up front end to expand view of an article
-** after these, send out to the team **
-
 - Tag field in supabase for different sources (eg. company vs. research paper)?
-- Put in Nate's sheet
-- Research API
+- Research API (this is next to try)
+    looks like ArXiv API is the best place to start (up to date science articles, can query eg. climate AI)
 - Daily newsletters
+
+
+Done Recently
+- Frontend fixes (scoring, expansion to see text)
+- Sent to team
+- Uploaded Nate's sheet
 
 
 

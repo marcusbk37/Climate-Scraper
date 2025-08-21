@@ -3,6 +3,29 @@ Companies Input Pipeline
 Process companies from CSV file row by row:
 1. Upload each company to Supabase
 2. Process each company to Pinecone (chunk + embed)
+
+Expected CSV Format:
+The pipeline can handle multiple CSV formats:
+
+Format 1 (from first screenshot):
+- F: Company name
+- Website: Company website
+- Category: Business category (e.g., "Anomaly & Fault Detection")
+- Use cases: Use case descriptions
+- Buyer Category: Target buyer categories
+- Description: Company description
+
+Format 2 (from second screenshot):
+- Headquartered: Company location
+- Founding year: Year founded
+- Stage: Investment stage
+- Last raise: Date of last funding round
+- Total funding ($M): Total funding in millions
+- Most recent valuation ($M): Company valuation
+- Key investors: List of investors
+- Employees: Number of employees
+
+The pipeline will automatically detect and process both formats.
 """
 
 import csv
@@ -38,8 +61,16 @@ class CompaniesInputPipeline:
         Returns:
             Dictionary with processing results
         """
+        # Try to get company name from various possible column names
+        company_name = (
+            company_data.get('Company Name') or 
+            company_data.get('F') or 
+            company_data.get('Company') or 
+            'Unknown Company'
+        )
+        
         results = {
-            'company_name': company_data.get('Company Name', 'Unknown'),
+            'company_name': company_name,
             'supabase_success': False,
             'pinecone_success': False,
             'article_id': None,
@@ -48,31 +79,73 @@ class CompaniesInputPipeline:
         }
         
         try:
-            # Extract company information from CSV columns
-            company_name = company_data.get('Company Name', 'Unknown Company')
-            drawdown_category = company_data.get('Drawdown Category', '')
-            website = company_data.get('Website', '')
-            num_employees = company_data.get('Number of employees', '')
-            num_jobs = company_data.get('Number of active jobs', '')
+            # Extract company information from CSV columns - handle multiple possible formats
+            use_cases = company_data.get('Use cases', '')
+            buyer_category = company_data.get('Buyer Category', '')
             description = company_data.get('Description', '')
+            
+            # Additional fields from the second screenshot format
+            headquartered = company_data.get('Headquartered', '')
+            founding_year = company_data.get('Founding year', '')
+            stage = company_data.get('Stage', '')
+            last_raise = company_data.get('Last raise', '')
+            total_funding = company_data.get('Total funding ($M)', '')
+            valuation = company_data.get('Most recent valuation ($M)', '')
+            key_investors = company_data.get('Key investors', '')
+            employees = company_data.get('Employees', '')
+            
+            # Legacy fields (keep for backward compatibility)
+            company_name = company_data.get('F', '')
+            category = company_data.get('Category', '')
+            num_employees = company_data.get('Number of employees', employees)
+            num_jobs = company_data.get('Number of active jobs', '')
+            url = company_data.get('Website', '')
             
             # Create combined text for processing
             combined_text = f"Company: {company_name}\n"
-            if drawdown_category:
-                combined_text += f"Drawdown Category: {drawdown_category}\n"
+            
+            if category:
+                combined_text += f"Category: {category}\n"
+            # if use_cases:
+            #     combined_text += f"Use Cases: {use_cases}\n"
+            # if buyer_category:
+            #     combined_text += f"Buyer Category: {buyer_category}\n"
+            # if headquartered:
+            #     combined_text += f"Headquartered: {headquartered}\n"
+            # if founding_year:
+            #     combined_text += f"Founding Year: {founding_year}\n"
+            # if stage:
+            #     combined_text += f"Stage: {stage}\n"
+            # if last_raise:
+            #     combined_text += f"Last Raise: {last_raise}\n"
+            # if total_funding:
+            #     combined_text += f"Total Funding: ${total_funding}M\n"
+            if valuation:
+                combined_text += f"Valuation: ${valuation}M\n"
+            # if key_investors:
+            #     combined_text += f"Key Investors: {key_investors}\n"
             if num_employees:
                 combined_text += f"Number of Employees: {num_employees}\n"
             if num_jobs:
                 combined_text += f"Active Jobs: {num_jobs}\n"
-            if website:
-                combined_text += f"Website: {website}\n"
+            if url:
+                combined_text += f"Website: {url}\n"
             if description:
                 combined_text += f"Description: {description}\n"
             
             # Create metadata
             metadata = {
                 'type': 'company',
-                'drawdown_category': drawdown_category,
+                'category': category,
+                'use_cases': use_cases,
+                'buyer_category': buyer_category,
+                'headquartered': headquartered,
+                'founding_year': founding_year,
+                'stage': stage,
+                'last_raise': last_raise,
+                'total_funding': total_funding,
+                'valuation': valuation,
+                'key_investors': key_investors,
                 'num_employees': num_employees,
                 'num_jobs': num_jobs,
                 'source': 'csv_import'
@@ -83,15 +156,26 @@ class CompaniesInputPipeline:
             
             # Step 1: Upload to Supabase
             print("📤 Uploading to Supabase...")
+            # Check if company already exists in Supabase
+            existing_company = self.db.get_article_by_title(company_name)
+            if existing_company:
+                print(f"⚠️ Company {company_name} already exists in database, skipping...")
+                return {
+                    'supabase_success': False,
+                    'error': 'Company already exists',
+                    'pinecone_success': False
+                }
+            
+            # don't need an else - because function returns if (existing company)
             article_id = self.db.store_article(
-                url=website or f"company://{company_name.lower().replace(' ', '-')}",
+                url=url or f"company://{company_name.lower().replace(' ', '-')}",
                 text=combined_text,
                 title=company_name,
                 authors=[],
                 published_at=datetime.now().isoformat(),
                 metadata=metadata
             )
-            
+        
             results['supabase_success'] = True
             results['article_id'] = article_id
             print(f"✅ Uploaded to Supabase (ID: {article_id})")
@@ -210,9 +294,9 @@ def demo_companies_processing():
     # Initialize pipeline
     pipeline = CompaniesInputPipeline()
     
-    # Process the CSV file
+    # Process the CSV file - update filename to match your actual CSV file
     summary = pipeline.process_csv_file(
-        csv_file_path="Climate Map Companies.csv",
+        csv_file_path="Nate Companies.csv",  # Update this to your actual CSV filename
         chunk_size=1000,
         start_row=0,
         max_rows=None  # Process all rows

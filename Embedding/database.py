@@ -97,6 +97,41 @@ class ArticleDatabase:
             print(f"❌ Error retrieving article {article_id}: {e}")
             return None
     
+    def get_article_by_title(self, title: str) -> Optional[Dict[str, Any]]:
+        """
+        Retrieve an article by its title. Case-insensitive.
+        
+        Args:
+            title: The article title to search for
+            
+        Returns:
+            Dict with article data or None if not found
+        """
+        try:
+            result = self.supabase.table("articles").select("*").ilike("title", f"%{title}%").single().execute()
+            return result.data
+        except Exception as e:
+            print(f"❌ Error retrieving article with title '{title}': {e}")
+            return None
+    
+    # def get_articles_by_title_search(self, title_search: str, limit: int = 10) -> List[Dict[str, Any]]:
+    #     """
+    #     Search for articles by title using partial matching.
+        
+    #     Args:
+    #         title_search: Partial title to search for
+    #         limit: Maximum number of articles to return
+            
+    #     Returns:
+    #         List of article dictionaries matching the search
+    #     """
+    #     try:
+    #         result = self.supabase.table("articles").select("*").ilike("title", f"%{title_search}%").limit(limit).execute()
+    #         return result.data
+    #     except Exception as e:
+    #         print(f"❌ Error searching articles with title containing '{title_search}': {e}")
+    #         return []
+
     def get_articles_by_domain(self, domain: str, limit: int = 100) -> List[Dict[str, Any]]:
         """
         Get articles from a specific domain.
@@ -197,8 +232,23 @@ def test_get_recent_articles():
     articles = db.get_recent_articles()
     print(f"Articles: {articles}")
 
+def test_get_article_by_title():
+    """Test retrieving an article by its title."""
+    db = ArticleDatabase()
+    title = "Test Article"
+    article = db.get_article_by_title(title)
+    print(f"Article with title '{title}': {article}")
+
+def test_get_articles_by_title_search():
+    """Test searching articles by partial title."""
+    db = ArticleDatabase()
+    search_term = "Test"
+    articles = db.get_articles_by_title_search(search_term)
+    print(f"Articles with title containing '{search_term}': {articles}")
+
 if __name__ == "__main__":
     # test_store_article()
     # test_get_article_by_id()
     # test_get_articles_by_domain()
-    test_get_recent_articles()
+    # test_get_recent_articles()
+    test_get_article_by_title()
