@@ -133,39 +133,6 @@ class ArticleDatabase:
             print(f"❌ Error retrieving recent articles: {e}")
             return []
     
-    def check_article_exists_by_arxiv_id(self, arxiv_id: str) -> Optional[str]:
-        """
-        Check if an article with the given ArXiv ID already exists.
-        
-        Args:
-            arxiv_id: The ArXiv ID to check
-            
-        Returns:
-            str: The existing article ID if found, None otherwise
-        """
-        try:
-            result = self.supabase.table("articles").select("id").eq("metadata->>arxiv_id", arxiv_id).single().execute()
-            return result.data["id"]
-        except Exception as e:
-            # Article not found or other error
-            return None
-    
-    def check_article_exists_by_url(self, url: str) -> Optional[str]:
-        """
-        Check if an article with the given URL already exists.
-        
-        Args:
-            url: The article URL to check
-            
-        Returns:
-            str: The existing article ID if found, None otherwise
-        """
-        try:
-            result = self.supabase.table("articles").select("id").eq("url", url).single().execute()
-            return result.data["id"]
-        except Exception as e:
-            # Article not found or other error
-            return None
 
 # Convenience function for quick usage
 def get_db() -> ArticleDatabase:
