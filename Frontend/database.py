@@ -79,6 +79,7 @@ class ArticleDatabase:
                 print(f"❌ Error storing article: {e}")
                 raise
     
+    # this should work with research papers too
     def get_article_by_id(self, article_id: str) -> Optional[Dict[str, Any]]:
         """
         Retrieve an article by its ID.

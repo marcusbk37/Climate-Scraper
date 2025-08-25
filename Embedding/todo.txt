@@ -1,14 +1,16 @@
 Soon To-Do
-- Tag field in supabase for different sources (eg. company vs. research paper)?
 - Research API (this is next to try)
-    looks like ArXiv API is the best place to start (up to date science articles, can query eg. climate AI)
-- Daily newsletters
-
+    Using ArXiv API - super straightforward yay
+    Upload initial data
+    Then figure out how to run script getting new articles every week
+- Daily newsletters. Should be a useful (can apply it to personal stuff too) and challenging workflow
+- For personal interest, would love to filter by num employees (in metadata)
 
 Done Recently
 - Frontend fixes (scoring, expansion to see text)
 - Sent to team
 - Uploaded Nate's sheet
+- Added labeling to differentiate between different types of content
 
 
 

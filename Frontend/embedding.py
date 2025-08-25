@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-class ArticleEmbedder:
+class ArticleEmbedder: # this should work with research papers too!
     def __init__(self):
         """Initialize Pinecone client."""
         api_key = os.getenv("PINECONE_API_KEY")
