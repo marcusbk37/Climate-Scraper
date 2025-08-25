@@ -151,6 +151,7 @@ def upload_arxiv_articles(keyword: str = "quantum computing", max_results: int =
     
     # Process each article
     successful_uploads = 0
+    skipped_duplicates = 0
     
     for i, article in enumerate(articles, 1):
         print(f"\n📄 Processing article {i}/{len(articles)}: {article.get('title', 'Unknown Title')}")
@@ -161,6 +162,24 @@ def upload_arxiv_articles(keyword: str = "quantum computing", max_results: int =
             title = article.get('title', '')
             authors = article.get('authors', [])
             published_at = article.get('published_at', '')
+            arxiv_id = article.get('arxiv_id', '')
+            
+            # Check for duplicates before processing
+            existing_article_id = None
+            if arxiv_id:
+                existing_article_id = db.check_article_exists_by_arxiv_id(arxiv_id)
+                if existing_article_id:
+                    print(f"  ⏭️  Article already exists (ArXiv ID: {arxiv_id}) - skipping")
+                    skipped_duplicates += 1
+                    continue
+            
+            # Also check by URL as a fallback
+            if not existing_article_id and url:
+                existing_article_id = db.check_article_exists_by_url(url)
+                if existing_article_id:
+                    print(f"  ⏭️  Article already exists (URL: {url}) - skipping")
+                    skipped_duplicates += 1
+                    continue
             
             # Combine title and abstract for the full text
             abstract = article.get('abstract', '')
@@ -169,6 +188,7 @@ def upload_arxiv_articles(keyword: str = "quantum computing", max_results: int =
             
             # Prepare metadata
             metadata = {
+                'type': 'research_paper',
                 'arxiv_id': article.get('arxiv_id', ''),
                 'categories': article.get('categories', []),
                 'source': 'arxiv',
@@ -208,8 +228,41 @@ def upload_arxiv_articles(keyword: str = "quantum computing", max_results: int =
             print(f"  ❌ Error processing article: {e}")
             continue
     
-    print(f"\n🎯 Upload complete! Successfully processed {successful_uploads}/{len(articles)} articles")
-    print(f"📊 Articles stored in Supabase and embeddings uploaded to Pinecone")
+    print(f"\n🎯 Upload complete!")
+    print(f"📊 Successfully processed: {successful_uploads} articles")
+    print(f"⏭️  Skipped duplicates: {skipped_duplicates} articles")
+    print(f"📈 Total articles found: {len(articles)} articles")
+    print(f"💾 Articles stored in Supabase and embeddings uploaded to Pinecone")
+
+def test_deduplication():
+    """Test the de-duplication functionality."""
+    print("🧪 Testing de-duplication functionality...")
+    
+    # Initialize database
+    try:
+        db = ArticleDatabase()
+        print("✅ Successfully initialized database")
+    except Exception as e:
+        print(f"❌ Error initializing database: {e}")
+        return
+    
+    # Test checking for existing articles
+    test_arxiv_id = "2401.00123"  # Example ArXiv ID
+    test_url = "https://arxiv.org/abs/2401.00123"
+    
+    print(f"\n🔍 Checking for existing article with ArXiv ID: {test_arxiv_id}")
+    existing_id = db.check_article_exists_by_arxiv_id(test_arxiv_id)
+    if existing_id:
+        print(f"✅ Found existing article with ID: {existing_id}")
+    else:
+        print("❌ No existing article found")
+    
+    print(f"\n🔍 Checking for existing article with URL: {test_url}")
+    existing_id = db.check_article_exists_by_url(test_url)
+    if existing_id:
+        print(f"✅ Found existing article with ID: {existing_id}")
+    else:
+        print("❌ No existing article found")
 
 def main():
     """Main function to run the upload process."""
@@ -219,8 +272,11 @@ def main():
     keyword = "climate AI"  # Change this to search for different topics
     max_results = 5  # Number of articles to process
     
-    search_arxiv(keyword)
-    # upload_arxiv_articles(keyword, max_results)
+    # Uncomment the line below to test de-duplication
+    # test_deduplication()
+    
+    # search_arxiv(keyword)
+    upload_arxiv_articles(keyword, max_results)
 
 if __name__ == "__main__":
     main()

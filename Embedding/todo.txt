@@ -3,6 +3,7 @@ Soon To-Do
     Using ArXiv API - super straightforward yay
     Upload initial data
     Then figure out how to run script getting new articles every week
+- Way of filtering by type label (eg. I just want companies)
 - Daily newsletters. Should be a useful (can apply it to personal stuff too) and challenging workflow
 - For personal interest, would love to filter by num employees (in metadata)
 
