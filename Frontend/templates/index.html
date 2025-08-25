@@ -253,6 +253,41 @@
             padding: 3px 10px;
         }
 
+        .type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+            text-transform: capitalize;
+        }
+
+        .type-company {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+        }
+
+        .type-research {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            color: white;
+        }
+
+        .type-article {
+            background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+            color: white;
+        }
+
+        .type-newsletter {
+            background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+            color: white;
+        }
+
+        .type-unknown {
+            background: linear-gradient(135deg, #9E9E9E 0%, #757575 100%);
+            color: white;
+        }
+
         .error-message {
             background: #fee;
             border: 1px solid #fcc;
@@ -410,11 +445,17 @@
 
                 const articleCard = document.createElement('div');
                 articleCard.className = 'article-card';
+                
+                // Extract content type from metadata
+                const contentType = article.metadata && article.metadata.type ? article.metadata.type : null;
+                const typeBadge = contentType ? `<span class="type-badge type-${contentType}">${contentType}</span>` : '';
+                
                 articleCard.innerHTML = `
                     <div class="article-title">
                         <a href="${article.url || '#'}" target="_blank">
                             ${article.title || 'Untitled Article'}
                         </a>
+                        ${typeBadge}
                         ${article.search_relevance ? 
                             `<span class="relevance-badge">${article.search_relevance.percent_match}% match</span>
                              <span class="relevance-badge secondary">${article.search_relevance.relative_relevance}% relevance to top</span>` : 
