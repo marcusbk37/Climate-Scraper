@@ -21,6 +21,7 @@ def search():
         data = request.get_json()
         query = data.get('query', '').strip()
         top_k = data.get('top_k', 10)
+        content_type = data.get('content_type', '').strip()
         
         if not query:
             return jsonify({
@@ -32,7 +33,9 @@ def search():
         
         # Search Pinecone
         embedder = get_embedder()
-        search_results = embedder.search_chunks(query, top_k=top_k)
+        # If filtering by content type, search for more results to ensure we get enough of the desired type
+        search_top_k = top_k * 3 if content_type else top_k  # Get 3x more results when filtering
+        search_results = embedder.search_chunks(query, top_k=search_top_k)
         print("hello")
         
         if not search_results or not search_results.get('result', {}).get('hits'):
@@ -71,6 +74,12 @@ def search():
         for article_id in article_ids:
             article = db.get_article_by_id(article_id)
             if article:
+                # Apply content type filter if specified
+                if content_type:
+                    article_type = article.get('metadata', {}).get('type', '').lower()
+                    if article_type != content_type.lower():
+                        continue
+                
                 # Add search relevance info
                 best_score = scores_by_article.get(article_id, 0.0)
                 absolute_percent = (90 if 1.5 * best_score * 100 > 90 else round(best_score * 100 * 1.5))
@@ -86,7 +95,10 @@ def search():
         # Sort articles by score of max matching chunk
         articles.sort(key=lambda x: x['search_relevance']['percent_match'], reverse=True)
         
-        print(f"📰 Retrieved {len(articles)} unique articles")
+        # Limit to requested number of results
+        articles = articles[:top_k]
+        
+        print(f"📰 Retrieved {len(articles)} unique articles (filtered from {len(article_ids)} candidates)")
         
         return jsonify({
             'success': True,
