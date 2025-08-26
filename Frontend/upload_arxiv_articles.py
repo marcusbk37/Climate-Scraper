@@ -270,7 +270,7 @@ def upload_arxiv_articles_with_resume(
     
     # Process each article
     successful_uploads = 0
-    skipped_duplicates = 0
+    # skipped_duplicates = 0 # currently not implemented
     
     for i, article in enumerate(articles[processed_count:], processed_count + 1):
         print(f"\n📄 Processing article {i}/{total_count}: {article.get('title', 'Unknown Title')}")
@@ -320,7 +320,7 @@ def upload_arxiv_articles_with_resume(
             
             # Store embeddings in Pinecone
             print(f"  🧠 Storing embeddings in Pinecone...")
-            chunk_ids = embedder.store_article_chunks(
+            chunk_ids = embedder.store_article_chunks( # this doesn't re-store if the chunks already exist - pinecone's upsert records
                 article_id=article_id,
                 text=full_text,
                 title=title
@@ -349,7 +349,7 @@ def upload_arxiv_articles_with_resume(
     
     print(f"\n🎯 Upload complete!")
     print(f"📊 Successfully processed: {successful_uploads} articles")
-    print(f"⏭️  Skipped duplicates: {skipped_duplicates} articles")
+    # print(f"⏭️  Skipped duplicates: {skipped_duplicates} articles")
     print(f"❌ Failed articles: {len(failed_articles)} articles")
     print(f"📈 Total articles processed: {processed_count} articles")
     print(f"💾 Articles stored in Supabase and embeddings uploaded to Pinecone")
@@ -379,6 +379,49 @@ def test_arxiv_deduplication():
     article_id_2 = db.store_article(url="https://arxiv.org/abs/2401.00123", text="Different content", title="Different Title") 
     print("✅ Found duplicate" if article_id_1 == article_id_2 else "❌ Created duplicate article")
 
+def test_arxiv_search_pagination():
+    """Test that ArXiv search pagination works correctly."""
+    print("\n🔍 Testing ArXiv search pagination...")
+    
+    try:
+        # Test with small result set
+        results1 = search_arxiv_with_pagination("quantum computing", max_results=20, start_index=0)
+        print(f"✅ Successfully retrieved {len(results1)} articles in first batch")
+        print(results1)
+        
+        # Test pagination by getting next set
+        results2 = search_arxiv_with_pagination("quantum computing", max_results=20, start_index=20)
+        print(f"✅ Successfully retrieved {len(results2)} articles in second batch")
+        print(results2)
+
+        # Verify no duplicate articles between batches
+        urls1 = set(article['url'] for article in results1)
+        urls2 = set(article['url'] for article in results2)
+        overlap = urls1.intersection(urls2)
+        
+        if not overlap:
+            print("✅ No duplicate articles between batches")
+        else:
+            print(f"❌ Found {len(overlap)} duplicate articles between batches")
+            
+        # Test required fields are present
+        required_fields = ['title', 'abstract', 'authors', 'published_at', 'url', 'categories']
+        for article in results1 + results2:
+            missing = [field for field in required_fields if field not in article]
+            if not missing:
+                print("✅ All required fields present in articles")
+            else:
+                print(f"❌ Missing fields in article: {missing}")
+                
+        print("\n🎯 Pagination test complete!")
+        
+    except Exception as e:
+        print(f"❌ Error testing pagination: {e}")
+
+def test_arxiv_upload():
+    """Test that ArXiv upload works correctly."""
+    print("\n🔍 Testing ArXiv upload...")
+    upload_arxiv_articles_with_resume(keyword="climate AI", max_results=5, delay_seconds=1.0, resume=False)
 
 def main():
     """Main function to run the upload process."""
@@ -390,13 +433,15 @@ def main():
     delay_seconds = 1.0  # Delay between API calls
     
     # Uncomment the line below to test de-duplication
-    test_arxiv_deduplication()
+    # test_arxiv_deduplication()
     
     # Use the new paginated search function
-    # search_arxiv_with_pagination(keyword, max_results, 0, delay_seconds)
+    # test_arxiv_search_pagination()
     
     # Use the new upload function with resume capability
-    # upload_arxiv_articles_with_resume(keyword, max_results, delay_seconds, resume=True)
+    # test_arxiv_upload()
+    upload_arxiv_articles_with_resume(keyword, max_results, delay_seconds, resume=False) 
+    # with keyword = "climate AI", had 700 results exactly - seems a little sus?
 
 if __name__ == "__main__":
     main()
