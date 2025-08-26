@@ -1,17 +1,21 @@
 Soon To-Do
 - Research API (this is next to try)
-    Using ArXiv API - super straightforward yay
-    Upload initial data
+    Upload initial data (410 articles when I search climate AI). Do I want to upload beyond this? Maybe ask partners if they have keywords they want
+    ^^ this is what is in progress rn...
+    Make clickable link for each (should use URL field, for companies too...)
     Then figure out how to run script getting new articles every week
 - Way of filtering by type label (eg. I just want companies)
 - Daily newsletters. Should be a useful (can apply it to personal stuff too) and challenging workflow
 - For personal interest, would love to filter by num employees (in metadata)
+- Some way of deleting stuff I don't want from both supabase and pinecone?
 
 Done Recently
+- Deduplication (using unique ID logic)
 - Frontend fixes (scoring, expansion to see text)
 - Sent to team
 - Uploaded Nate's sheet
 - Added labeling to differentiate between different types of content
+- Initial logic for ArXiv (tested full pipeline on 5 research papers)
 
 
 
