@@ -45,7 +45,7 @@ def search():
                 'total_hits': 0,
                 'unique_articles': 0,
                 'articles': [],
-                'message': 'No relevant articles found for your search query.'
+                'message': 'No relevant content found for your search query.'
             })
         
         hits = search_results['result']['hits']
