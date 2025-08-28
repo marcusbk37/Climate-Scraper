@@ -58,8 +58,8 @@ class GmailReader:
                 arguments={
                     "user_id": self.user_id,
                     "max_results": max_results,
-                    "include_payload": True,
-                    "verbose": True
+                    "include_payload": False,
+                    "verbose": False # think I have these last two set the way I want.
                 }
             )
             return result
@@ -73,8 +73,9 @@ gmail_reader = GmailReader()
 if __name__ == '__main__':
     print("🚀 Testing Gmail Reader")
     if gmail_reader.verified:
-        result = gmail_reader.read_emails(max_results=5)
+        result = gmail_reader.read_emails(max_results=1)
         print(f"Result: {result}")
+
     else:
         print("❌ Gmail connection not verified")
         print("💡 Please complete the OAuth authentication in your browser and run the script again.")

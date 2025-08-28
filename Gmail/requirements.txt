@@ -1,0 +1,4 @@
+composio-sdk
+python-dotenv
+supabase
+pinecone-client
