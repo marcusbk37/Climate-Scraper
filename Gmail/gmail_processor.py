@@ -123,6 +123,7 @@ class GmailProcessor:
                 
                 # Create metadata for the email
                 metadata = {
+                    "type": "email",
                     'email_id': email_content['email_id'],
                     'thread_id': email_content['thread_id'],
                     'from_email': email_content['from_email'],
@@ -135,7 +136,7 @@ class GmailProcessor:
                 # Store in Supabase
                 print(f"💾 Storing email in Supabase...")
                 article_id = self.db.store_article(
-                    url=gmail.com, # don't need a specific url for each email...
+                    url=email_content['url'], # want the URL for the email for deduplication... ith... and can choose not to show it
                     text=email_content['body'],
                     title=title,
                     authors=[email_content['from_email']],

@@ -126,3 +126,4 @@ The processor includes comprehensive error handling:
 - The processor prefers plain text over HTML content when available
 - Chunks are created with sentence boundaries to maintain context
 - Duplicate emails (same URL) are handled gracefully
+
