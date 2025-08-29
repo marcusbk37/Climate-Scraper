@@ -1,0 +1,6 @@
+composio-sdk
+python-dotenv
+supabase
+pinecone-client
+
+# wtf is this file doing why did chat create it...
