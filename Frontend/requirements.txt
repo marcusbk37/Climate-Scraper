@@ -4,3 +4,4 @@ pinecone==7.3.0 # not sure why changing this worked when deployed...but it did
 # it removed pinecone-client entirely (now just pinecone, plugin-assistant, and plugin-interface).
 # maybe pinecone itself wasn't in vercel (I had installed locally for a different reason, not using requirements.txt)
 python-dotenv==1.0.0
+composio==0.8.8

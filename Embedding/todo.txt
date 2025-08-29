@@ -1,21 +1,28 @@
 Soon To-Do
-- Research API (this is next to try)
-    Upload initial data (410 articles when I search climate AI). Do I want to upload beyond this? Maybe ask partners if they have keywords they want
-    ^^ this is what is in progress rn...
-    Make clickable link for each (should use URL field, for companies too...)
-    Then figure out how to run script getting new articles every week
-- Way of filtering by type label (eg. I just want companies)
-- Daily newsletters. Should be a useful (can apply it to personal stuff too) and challenging workflow
+- Way to filter out junk that I get in the inbox so it doesn't go on the site...
+    Maybe have a few keywords (eg. climate, AI, tech, company) that I check for to make sure its relevant?
+- Script to run scraping on email daily. I think if I just push to vercel it should?
+- Does unique dedpulication work here? Am I screwing it up with gmail?
 - For personal interest, would love to filter by num employees (in metadata)
 - Some way of deleting stuff I don't want from both supabase and pinecone?
 
+Automated ingestion to whatever gets forwarded to an email. Eg. newsletters, company, etc.
+- Good way to finalize this
+- Look for TomKat center website if I can get that stuff
+- Job posting board?
+
 Done Recently
 - Deduplication (using unique ID logic)
-- Frontend fixes (scoring, expansion to see text)
+- Frontend fixes (scoring, expansion to see text, calling stuff 'content')
 - Sent to team
 - Uploaded Nate's sheet
 - Added labeling to differentiate between different types of content
 - Initial logic for ArXiv (tested full pipeline on 5 research papers)
+- Uploaded initial data (keyword: "climate AI") - was 700 papers
+- Made clickable links to research papers in each entry
+- Ability to filter by label type
+- Email ingestion set up!
+- Daily newsletters subscribed to
 
 
 

@@ -299,7 +299,7 @@
             color: white;
         }
 
-        .type-research {
+        .type-research_paper {
             background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
             color: white;
         }
@@ -316,6 +316,11 @@
 
         .type-unknown {
             background: linear-gradient(135deg, #9E9E9E 0%, #757575 100%);
+            color: white;
+        }
+
+        .type-email {
+            background: linear-gradient(135deg, #E91E63 0%, #C2185B 100%);
             color: white;
         }
 
@@ -382,6 +387,7 @@
                         <option value="">All content</option>
                         <option value="research_paper">Research Papers</option>
                         <option value="company">Companies</option>
+                        <option value="email">Emails</option>
                     </select>
                 </div>
                 <button type="submit" class="search-button" id="searchButton">
@@ -490,7 +496,7 @@
                 
                 // Extract content type from metadata
                 const contentType = article.metadata && article.metadata.type ? article.metadata.type : null;
-                const typeBadge = contentType ? `<span class="type-badge type-${contentType}">${contentType}</span>` : '';
+                const typeBadge = contentType ? `<span class="type-badge type-${contentType}">${formatContentType(contentType)}</span>` : '';
                 
                 articleCard.innerHTML = `
                     <div class="article-title">
@@ -512,9 +518,9 @@
                             `<span>📅 ${new Date(article.published_at).toLocaleDateString()}` : 
                             '<span>📅 Date unknown'}
                         </span>
-                        ${article.url ? 
+                        ${article.url && contentType !== 'email' ? 
                             `<span>🌐 <a href="${article.url}" target="_blank" style="color: #667eea; text-decoration: underline;">${article.url}</a></span>` : 
-                            '<span>🌐 Unknown source</span>'}
+                            contentType === 'email' ? '' : '<span>🌐</span>'}
                     </div>
                     <div class="article-text article-text-preview" data-full-text="${article.text}">
                         ${makeLinksClickable(previewText)}
@@ -566,6 +572,18 @@
                 textContainer.innerHTML = makeLinksClickable(fullText);
                 button.textContent = 'Show less';
             }
+        }
+
+        // Function to format content type for display
+        function formatContentType(contentType) {
+            const typeMap = {
+                'research_paper': 'Research Paper',
+                'company': 'Company',
+                'email': 'Email',
+                'article': 'Article',
+                'newsletter': 'Newsletter'
+            };
+            return typeMap[contentType] || contentType;
         }
 
         // Focus search input on page load
